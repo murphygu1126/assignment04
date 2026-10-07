@@ -4,3 +4,81 @@ format: html
 author: "Zheng Gu zg252"
 embed-resources: true
 ---
+# Data source
+[Our World in Data](https://ourworldindata.org/)
+
+[data processing code and raw data](https://github.com/rfordatascience/tidytuesday/tree/main/data/2025/2025-08-05)
+
+# graph 1 
+```{r}
+library(tidyverse)
+data <- read_csv("income_inequality_processed.csv")
+data_US <- read_csv("income_inequality_processed.csv") |>
+filter(Entity == "United States")
+ggplot(data_US, aes(x = Year, y = gini_dhi_eq)) +
+  
+  geom_line(linewidth = 1.5) +
+  geom_point(stroke = 1) +
+  labs(
+    title = "Trends in Disposable Income Inequality in the US",
+    subtitle = "Disposable Gini coefficient evolution in the US (1980–2020)",
+    x = "Year",
+    y = "Disposable Gini Coefficient",
+    caption = "Source: income_inequality_processed.csv"
+  )
+```
+
+This visualization displays the upward trend of disposable income inequality in the United States from 1960 to 2020, where the Gini coefficient climbs from roughly 0.31 to nearly 0.40. This steady upward climb illustrates a compounding structural divergence in post-tax household resources over several decades. Policymakers can utilize this trend to evaluate the compounding impact of wage stagnation at lower deciles paired with accelerated capital gains at the top.
+
+# graph 2
+```{r}
+data_US_inequality <- data_US |>
+  drop_na(gini_mi_eq, gini_dhi_eq) |>
+  mutate(inequality = gini_dhi_eq - gini_mi_eq)
+ggplot(data_US_inequality, aes(x = Year, y = inequality)) +
+  geom_point(alpha = 0.5, color = "blue") +
+  geom_smooth(method = "lm", linetype = "dashed", color = "red") +
+  labs(
+    title = "Market vs. Disposable Income Inequality",
+    subtitle = "trends of the difference between Gini coefficent of market income and disposable income",
+    x = "Year",
+    y = "the gap between disposable income and market income",
+    caption = "Source: income_inequality_processed.csv"
+  )
+         
+```
+This visualization uses a scatter plot with a linear regression trendline to track the shifting gap between market income and disposable income inequality from 1970 onward. The downward-sloping regression line signals changing fiscal policy dynamics regarding how effectively government transfers and taxes buffer market-generated disparities.
+
+# graph 3
+```{r}
+df_box <- read_csv("income_inequality_processed.csv") |>
+  mutate(Decade = paste0((Year %/% 10) * 10, "s"))
+# I found the code change continus years in decades from this website https://stackoverflow.com/questions/66821113/how-to-map-years-into-subsequent-decades-in-r
+ggplot(df_box, aes(x = Decade, y = gini_dhi_eq, fill = Decade)) +
+  geom_boxplot(notch = FALSE) +
+  # I found scale_fill_viridis_d() from this website https://ggplot2.tidyverse.org/reference/scale_viridis.html
+  scale_fill_viridis_d() +
+  labs(
+    title = "Distribution of Disposable Income Inequality by Decade",
+    subtitle = "Box plots showing median and dispersion of Gini coefficients across decades",
+    x = "Decade",
+    y = "Disposable Gini Coefficient",
+    fill = "Decade",
+    caption = "Source: income_inequality_processed.csv"
+  ) 
+```
+This visualization uses box plots divide into decades to capture the median gap of disposable gini coefficients globally from the 1960s to the 2020s. The comparsion shows how global baseline inequality medians shifted upward and widened significantly entering the 2000s and 2010s.This graph helps experts understand whether income inequality is a domestic problem or global problem.
+
+# graph 4
+```{r}
+ggplot(data, aes(x = gini_dhi_eq)) +
+  geom_histogram(bins = 30, fill = "darkblue", color = "white", alpha = 0.8) +
+  labs(
+    title = "Distribution of Disposable Income Inequality (Gini Coefficient)",
+    subtitle = "Histogram showing the frequency of disposable Gini coefficients across all country-years",
+    x = "Disposable Gini Coefficient",
+    y = "Count",
+    caption = "Source: income_inequality_processed.csv"
+  )
+```
+This visualization presents a histogram illustrating the distribution of disposable gini coefficients across all the country and years. This shows that the gini coefficents cluster around 0.3 - 0.33. Through mapping the distribution, the experts can design targeted foreign assistance, trade adjustments, and domestic safety net reforms tailored to specific structural clusters.
