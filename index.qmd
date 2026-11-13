@@ -13,6 +13,7 @@ embed-resources: true
 ```{r}
 #| echo: true
 #| message: false
+#| warning: false
 library(tidyverse)
 data <- read_csv("income_inequality_processed.csv")
 data_US <- read_csv("income_inequality_processed.csv") |>
@@ -35,6 +36,7 @@ This visualization displays the upward trend of disposable income inequality in 
 # graph 2
 ```{r}
 #| echo: true
+#| message: false
 #| warning: false
 data_US_inequality <- data_US |>
   drop_na(gini_mi_eq, gini_dhi_eq) |>
@@ -55,6 +57,7 @@ This visualization uses a scatter plot with a linear regression trendline to tra
 
 # graph 3
 ```{r}
+#| message: false
 df_box <- read_csv("income_inequality_processed.csv") |>
   mutate(Decade = paste0((Year %/% 10) * 10, "s"))
 # I found the code change continus years in decades from this website https://stackoverflow.com/questions/66821113/how-to-map-years-into-subsequent-decades-in-r
@@ -75,6 +78,7 @@ This visualization uses box plots divide into decades to capture the median gap 
 
 # graph 4
 ```{r}
+#| message: false
 ggplot(data, aes(x = gini_dhi_eq)) +
   geom_histogram(bins = 30, fill = "darkblue", color = "white", alpha = 0.8) +
   labs(
