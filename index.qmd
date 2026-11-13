@@ -11,6 +11,7 @@ embed-resources: true
 
 # graph 1 
 ```{r}
+#| echo: false
 library(tidyverse)
 data <- read_csv("income_inequality_processed.csv")
 data_US <- read_csv("income_inequality_processed.csv") |>
