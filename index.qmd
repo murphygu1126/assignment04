@@ -18,9 +18,9 @@ data <- read_csv("income_inequality_processed.csv")
 data_US <- read_csv("income_inequality_processed.csv") |>
 filter(Entity == "United States")
 ggplot(data_US, aes(x = Year, y = gini_dhi_eq)) +
-  
   geom_line(linewidth = 1.5) +
   geom_point(stroke = 1) +
+  annotate("text", x = 2000, y = 0.325, label = "This visualization displays the upward trend of disposable income inequality in the United States from 1960 to 2020", size = 1.75)
   labs(
     title = "Trends in Disposable Income Inequality in the US",
     subtitle = "Disposable Gini coefficient evolution in the US (1980–2020)",
@@ -35,6 +35,7 @@ This visualization displays the upward trend of disposable income inequality in 
 # graph 2
 ```{r}
 #| echo: true
+#| warning: false
 data_US_inequality <- data_US |>
   drop_na(gini_mi_eq, gini_dhi_eq) |>
   mutate(inequality = gini_dhi_eq - gini_mi_eq)
