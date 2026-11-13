@@ -82,3 +82,6 @@ ggplot(data, aes(x = gini_dhi_eq)) +
   )
 ```
 This visualization presents a histogram illustrating the distribution of disposable gini coefficients across all the country and years. This shows that the gini coefficents cluster around 0.3 - 0.33. Through mapping the distribution, the experts can design targeted foreign assistance, trade adjustments, and domestic safety net reforms tailored to specific structural clusters.
+
+# stretch execrise
+I try to make up this stretch execrise.
